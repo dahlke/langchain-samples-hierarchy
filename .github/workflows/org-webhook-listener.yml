@@ -1,0 +1,41 @@
+name: Organization Webhook Listener
+
+# This workflow can be triggered by a GitHub App or webhook that forwards
+# organization repository events.
+#
+# To set this up:
+# 1. Create a GitHub App with "Repository" webhook events enabled
+# 2. Install the App on your organization
+# 3. Configure the App to trigger this workflow via repository_dispatch
+#
+# Alternatively, use GitHub's organization webhooks with a serverless function
+# (e.g., AWS Lambda, Cloudflare Workers) that forwards events to this workflow.
+
+on:
+  repository_dispatch:
+    types:
+      - org_repo_created
+      - org_repo_deleted
+      - org_repo_publicized
+      - org_repo_privatized
+      - org_repo_archived
+      - org_repo_unarchived
+
+jobs:
+  trigger-rebuild:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log event details
+        run: |
+          echo "Event type: ${{ github.event.action }}"
+          echo "Repository: ${{ github.event.client_payload.repository || 'N/A' }}"
+          echo "Triggering rebuild..."
+
+      - name: Trigger build workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: repo_updated
+          client-payload: '{"ref": "${{ github.ref }}", "triggered_by": "${{ github.event.action }}"}'
+

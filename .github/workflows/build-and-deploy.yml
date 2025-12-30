@@ -1,0 +1,98 @@
+name: Build and Deploy Hierarchy Site
+
+on:
+  # Run when triggered by repository events from the org
+  # Note: This requires setting up an organization webhook pointing to a GitHub App
+  # or using repository_dispatch from another workflow
+  repository_dispatch:
+    types: [repo_created, repo_updated, repo_deleted]
+
+  # Run on a schedule (daily at midnight UTC)
+  schedule:
+    - cron: '0 0 * * *'
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      org:
+        description: 'GitHub organization to scan'
+        required: true
+        default: 'langchain-samples'
+
+  # Run on push to main for testing
+  push:
+    branches:
+      - main
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+env:
+  GITHUB_ORG: ${{ github.event.inputs.org || 'langchain-samples' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Fetch repository data from GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -m src.github_fetcher \
+            --org "${{ env.GITHUB_ORG }}" \
+            --output data/repos.json
+
+      - name: Build hierarchy data
+        run: |
+          python -m src.hierarchy_builder \
+            --input data/repos.json \
+            --output data/hierarchy.json
+
+      - name: Generate static site
+        run: |
+          python -m src.site_generator \
+            --input data/hierarchy.json \
+            --output docs \
+            --org "${{ env.GITHUB_ORG }}"
+
+      - name: Upload artifact for Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
