@@ -1,17 +1,12 @@
 name: Build and Deploy Hierarchy Site
 
 on:
-  # Run when triggered by repository events from the org
-  # Note: This requires setting up an organization webhook pointing to a GitHub App
-  # or using repository_dispatch from another workflow
   repository_dispatch:
     types: [repo_created, repo_updated, repo_deleted]
 
-  # Run on a schedule (daily at midnight UTC)
   schedule:
     - cron: '0 0 * * *'
 
-  # Allow manual trigger
   workflow_dispatch:
     inputs:
       org:
@@ -19,18 +14,15 @@ on:
         required: true
         default: 'langchain-samples'
 
-  # Run on push to main for testing
   push:
     branches:
       - main
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: false

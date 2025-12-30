@@ -40,6 +40,3 @@ Thumbs.db
 # Data files (generated)
 data/
 
-# Keep docs for GitHub Pages but ignore during local dev if needed
-# docs/
-

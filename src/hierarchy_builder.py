@@ -4,7 +4,7 @@ Build hierarchical structures from repository topics.
 
 import json
 from collections import defaultdict
-from dataclasses import dataclass, asdict, field
+from dataclasses import dataclass, field
 from typing import Optional
 
 
@@ -28,7 +28,7 @@ class HierarchyData:
     """Complete hierarchy data structure for the visualization."""
     topics: dict[str, TopicNode]
     all_repositories: list[dict]
-    topic_connections: list[dict]  # repos that share multiple topics
+    topic_connections: list[dict]
     languages: dict[str, list[dict]]
     stats: dict
 
@@ -68,7 +68,6 @@ class HierarchyBuilder:
         Returns:
             HierarchyData object containing organized data
         """
-        # Group by topics
         topics: dict[str, TopicNode] = {}
         languages: dict[str, list[dict]] = defaultdict(list)
         topic_connections: list[dict] = []
@@ -77,27 +76,23 @@ class HierarchyBuilder:
             repo_topics = repo.get("topics", [])
             repo_language = repo.get("language")
 
-            # Add to topic groups
             for topic in repo_topics:
                 if topic not in topics:
                     topics[topic] = TopicNode(name=topic)
                 topics[topic].repositories.append(repo)
                 topics[topic].count += 1
 
-            # Track repos with no topics
             if not repo_topics:
                 if "uncategorized" not in topics:
                     topics["uncategorized"] = TopicNode(name="uncategorized")
                 topics["uncategorized"].repositories.append(repo)
                 topics["uncategorized"].count += 1
 
-            # Group by language
             if repo_language:
                 languages[repo_language].append(repo)
             else:
                 languages["Unknown"].append(repo)
 
-            # Track topic connections (repos with multiple topics)
             if len(repo_topics) > 1:
                 topic_connections.append({
                     "repository": repo["name"],
@@ -105,7 +100,6 @@ class HierarchyBuilder:
                     "url": repo["url"],
                 })
 
-        # Calculate stats
         stats = self._calculate_stats(topics, languages)
 
         return HierarchyData(
@@ -121,14 +115,12 @@ class HierarchyBuilder:
         total_stars = sum(repo.get("stars", 0) for repo in self.repositories)
         total_forks = sum(repo.get("forks", 0) for repo in self.repositories)
 
-        # Most popular topics by repo count
         sorted_topics = sorted(
             topics.items(),
             key=lambda x: x[1].count,
             reverse=True
         )
 
-        # Most popular languages
         sorted_languages = sorted(
             languages.items(),
             key=lambda x: len(x[1]),
@@ -184,7 +176,6 @@ def main():
     hierarchy = builder.build_hierarchy()
     builder.save_hierarchy(hierarchy, args.output)
 
-    # Print summary
     stats = hierarchy.stats
     print(f"\nHierarchy Summary:")
     print(f"  Total repositories: {stats['total_repositories']}")

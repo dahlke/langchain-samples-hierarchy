@@ -19,46 +19,20 @@ def main():
     parser = argparse.ArgumentParser(
         description="Build the repository hierarchy visualization site"
     )
-    parser.add_argument(
-        "--org",
-        required=True,
-        help="GitHub organization name"
-    )
-    parser.add_argument(
-        "--output-dir",
-        default="docs",
-        help="Output directory for the static site (default: docs)"
-    )
-    parser.add_argument(
-        "--data-dir",
-        default="data",
-        help="Directory for intermediate data files (default: data)"
-    )
-    parser.add_argument(
-        "--include-forks",
-        action="store_true",
-        help="Include forked repositories"
-    )
-    parser.add_argument(
-        "--include-archived",
-        action="store_true",
-        help="Include archived repositories"
-    )
-    parser.add_argument(
-        "--skip-fetch",
-        action="store_true",
-        help="Skip fetching data (use existing repos.json)"
-    )
+    parser.add_argument("--org", required=True, help="GitHub organization name")
+    parser.add_argument("--output-dir", default="docs", help="Output directory for the static site")
+    parser.add_argument("--data-dir", default="data", help="Directory for intermediate data files")
+    parser.add_argument("--include-forks", action="store_true", help="Include forked repositories")
+    parser.add_argument("--include-archived", action="store_true", help="Include archived repositories")
+    parser.add_argument("--skip-fetch", action="store_true", help="Skip fetching data (use existing repos.json)")
 
     args = parser.parse_args()
 
-    # Ensure data directory exists
     os.makedirs(args.data_dir, exist_ok=True)
 
     repos_path = os.path.join(args.data_dir, "repos.json")
     hierarchy_path = os.path.join(args.data_dir, "hierarchy.json")
 
-    # Step 1: Fetch repositories
     if not args.skip_fetch:
         print("\n" + "=" * 60)
         print("Step 1: Fetching repositories from GitHub")
@@ -80,7 +54,6 @@ def main():
             print(f"Error: {repos_path} not found. Cannot skip fetch.")
             sys.exit(1)
 
-    # Step 2: Build hierarchy
     print("\n" + "=" * 60)
     print("Step 2: Building hierarchy data")
     print("=" * 60)
@@ -89,7 +62,6 @@ def main():
     hierarchy = builder.build_hierarchy()
     builder.save_hierarchy(hierarchy, hierarchy_path)
 
-    # Print summary
     stats = hierarchy.stats
     print(f"\nHierarchy Summary:")
     print(f"  Total repositories: {stats['total_repositories']}")
@@ -98,7 +70,6 @@ def main():
     print(f"  Repos with multiple topics: {stats['repos_with_multiple_topics']}")
     print(f"  Repos without topics: {stats['repos_without_topics']}")
 
-    # Step 3: Generate static site
     print("\n" + "=" * 60)
     print("Step 3: Generating static site")
     print("=" * 60)
