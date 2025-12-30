@@ -11,16 +11,8 @@ from datetime import datetime, timezone
 class SiteGenerator:
     """Generates static HTML pages from hierarchy data."""
 
-    # LangChain logo SVG (parrot icon)
-    LANGCHAIN_LOGO = '''<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-icon">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="url(#logo-gradient)"/>
-        <defs>
-            <linearGradient id="logo-gradient" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#1DB8A4"/>
-                <stop offset="100%" stop-color="#7C3AED"/>
-            </linearGradient>
-        </defs>
-    </svg>'''
+    # LangChain logo from Wikimedia Commons
+    LANGCHAIN_LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/6/60/LangChain_Logo.svg'
 
     def __init__(self, hierarchy_path: str, org_name: str):
         with open(hierarchy_path, "r") as f:
@@ -52,6 +44,7 @@ class SiteGenerator:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{self.org_name} - Repository Explorer</title>
+    <link rel="icon" type="image/png" href="https://registry.npmmirror.com/@lobehub/icons-static-png/1.75.0/files/dark/langchain-color.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -224,20 +217,29 @@ class SiteGenerator:
         /* Header with LangChain logo */
         header {{
             text-align: center;
-            margin-bottom: 4rem;
-            padding: 3rem 0;
+            margin-bottom: 2rem;
+            padding: 2rem 0 1rem;
         }}
 
         .logo-container {{
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
         }}
 
         .logo-icon {{
-            width: 48px;
             height: 48px;
+            width: auto;
+        }}
+
+        /* Invert logo colors for dark mode (logo is dark by default) */
+        :root .logo-icon {{
+            filter: brightness(0) invert(1);
+        }}
+
+        [data-theme="light"] .logo-icon {{
+            filter: none;
         }}
 
         .logo-text {{
@@ -940,43 +942,11 @@ class SiteGenerator:
     <div class="container">
         <header>
             <div class="logo-container">
-                <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-icon">
-                    <circle cx="25" cy="25" r="25" fill="url(#lc-grad)"/>
-                    <path d="M18 17C18 15.8954 18.8954 15 20 15H30C31.1046 15 32 15.8954 32 17V33C32 34.1046 31.1046 35 30 35H20C18.8954 35 18 34.1046 18 33V17Z" fill="white" fill-opacity="0.9"/>
-                    <path d="M21 20H29M21 25H29M21 30H26" stroke="#1DB8A4" stroke-width="2" stroke-linecap="round"/>
-                    <circle cx="36" cy="20" r="5" fill="#7C3AED"/>
-                    <circle cx="36" cy="32" r="4" fill="#EC4899"/>
-                    <defs>
-                        <linearGradient id="lc-grad" x1="0" y1="0" x2="50" y2="50" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#1DB8A4"/>
-                            <stop offset="100%" stop-color="#7C3AED"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <span class="logo-text"><span>LangChain</span> Samples</span>
+                <img src="{self.LANGCHAIN_LOGO_URL}" alt="LangChain Logo" class="logo-icon">
             </div>
-            <h1>Repository Explorer</h1>
+            <h1>Samples Repository Explorer</h1>
             <p class="subtitle">Discover code examples, cookbooks, reference implementations, and workshop materials from the LangChain team.</p>
         </header>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value">{stats.get('total_repositories', 0)}</div>
-                <div class="stat-label">Repositories</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">{stats.get('total_topics', 0)}</div>
-                <div class="stat-label">Topics</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">{stats.get('total_languages', 0)}</div>
-                <div class="stat-label">Languages</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">{stats.get('total_stars', 0)}</div>
-                <div class="stat-label">Total Stars</div>
-            </div>
-        </div>
 
         <div class="controls">
             <div class="search-box">
