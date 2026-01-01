@@ -237,6 +237,183 @@
             margin: 0 auto;
         }
 
+        /* Product Panels - Main navigation cards */
+        .product-panels {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .product-panels {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        .product-panel {
+            background: var(--lc-bg-card);
+            border: 1px solid var(--lc-border);
+            border-radius: var(--radius-xl);
+            padding: 1.75rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .product-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .product-panel:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .product-panel:hover::before {
+            opacity: 1;
+        }
+
+        .product-panel.active {
+            border-color: transparent;
+        }
+
+        .product-panel.active::before {
+            opacity: 1;
+        }
+
+        /* LangChain Panel */
+        .product-panel.langchain::before {
+            background: linear-gradient(90deg, #22C55E 0%, #16A34A 100%);
+        }
+        .product-panel.langchain.active {
+            background: rgba(34, 197, 94, 0.08);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+        .product-panel.langchain .product-icon {
+            background: rgba(34, 197, 94, 0.12);
+            color: #22C55E;
+        }
+        .product-panel.langchain .product-count {
+            background: rgba(34, 197, 94, 0.12);
+            color: #22C55E;
+        }
+
+        /* LangGraph Panel */
+        .product-panel.langgraph::before {
+            background: linear-gradient(90deg, #3B82F6 0%, #2563EB 100%);
+        }
+        .product-panel.langgraph.active {
+            background: rgba(59, 130, 246, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+        .product-panel.langgraph .product-icon {
+            background: rgba(59, 130, 246, 0.12);
+            color: #3B82F6;
+        }
+        .product-panel.langgraph .product-count {
+            background: rgba(59, 130, 246, 0.12);
+            color: #3B82F6;
+        }
+
+        /* LangSmith Panel */
+        .product-panel.langsmith::before {
+            background: linear-gradient(90deg, #F59E0B 0%, #D97706 100%);
+        }
+        .product-panel.langsmith.active {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+        .product-panel.langsmith .product-icon {
+            background: rgba(245, 158, 11, 0.12);
+            color: #F59E0B;
+        }
+        .product-panel.langsmith .product-count {
+            background: rgba(245, 158, 11, 0.12);
+            color: #F59E0B;
+        }
+
+        .product-panel-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .product-icon svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        .product-title {
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--lc-text-primary);
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: var(--lc-text-secondary);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .product-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .product-count {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+        }
+
+        .product-arrow {
+            width: 20px;
+            height: 20px;
+            color: var(--lc-text-muted);
+            transition: transform 0.2s, color 0.2s;
+        }
+
+        .product-panel:hover .product-arrow {
+            transform: translateX(4px);
+            color: var(--lc-text-primary);
+        }
+
+        /* Product panel animations */
+        .product-panel {
+            animation: fadeInUp 0.5s ease-out;
+            animation-fill-mode: backwards;
+        }
+
+        .product-panel:nth-child(1) { animation-delay: 0.1s; }
+        .product-panel:nth-child(2) { animation-delay: 0.2s; }
+        .product-panel:nth-child(3) { animation-delay: 0.3s; }
+
         /* Stats Grid - LangChain style cards */
         .stats-grid {
             display: grid;
@@ -583,6 +760,52 @@
             display: none;
         }
 
+        /* Product Category Styles */
+        .product-category .topic-group-header {
+            gap: 0.5rem;
+        }
+
+        .category-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-icon svg {
+            width: 16px;
+            height: 16px;
+            color: var(--lc-teal);
+        }
+
+        .subcategory-item {
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 0.25rem;
+        }
+
+        .subcategory-item .subcategory-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .subcategory-item .subcategory-desc {
+            font-size: 0.7rem;
+            color: var(--lc-text-muted);
+            font-weight: 400;
+        }
+
+        .subcategory-item .topic-count {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .subcategory-item {
+            position: relative;
+        }
+
         /* Difficulty Levels */
         .difficulty-item {
             display: flex;
@@ -742,12 +965,19 @@
             opacity: 1;
         }
 
+        .repo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
         .repo-name {
             font-family: 'Manrope', sans-serif;
             font-size: 1.05rem;
             font-weight: 700;
             color: var(--lc-teal);
-            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -757,6 +987,20 @@
             width: 18px;
             height: 18px;
             opacity: 0.7;
+            flex-shrink: 0;
+        }
+
+        .repo-category-badge {
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            background: var(--lc-purple-muted);
+            color: var(--lc-purple);
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .repo-description {
@@ -908,6 +1152,63 @@
             <p class="subtitle">Discover code examples, cookbooks, reference implementations, and workshop materials from the LangChain team.</p>
         </header>
 
+        <!-- Product Panels -->
+        <div class="product-panels" id="product-panels">
+            <div class="product-panel langchain" data-product="langchain">
+                <div class="product-panel-header">
+                    <div class="product-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                        </svg>
+                    </div>
+                    <div class="product-title">LangChain</div>
+                </div>
+                <div class="product-description">Framework integrations, utilities, guardrails, and middleware patterns.</div>
+                <div class="product-footer">
+                    <span class="product-count" id="langchain-count">0 repos</span>
+                    <svg class="product-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="product-panel langgraph" data-product="langgraph">
+                <div class="product-panel-header">
+                    <div class="product-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                        </svg>
+                    </div>
+                    <div class="product-title">LangGraph</div>
+                </div>
+                <div class="product-description">Agent workflows, state machines, multi-agent systems, and complex orchestration.</div>
+                <div class="product-footer">
+                    <span class="product-count" id="langgraph-count">0 repos</span>
+                    <svg class="product-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="product-panel langsmith" data-product="langsmith">
+                <div class="product-panel-header">
+                    <div class="product-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 1-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+                        </svg>
+                    </div>
+                    <div class="product-title">LangSmith</div>
+                </div>
+                <div class="product-description">Observability, tracing, evaluation, debugging, and deployment pipelines.</div>
+                <div class="product-footer">
+                    <span class="product-count" id="langsmith-count">0 repos</span>
+                    <svg class="product-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
         <div class="controls">
             <div class="search-box">
                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -978,11 +1279,15 @@
         const sidebarTitle = document.getElementById('sidebar-title');
         const themeToggle = document.getElementById('theme-toggle');
 
+        let selectedProduct = null;
+
         document.addEventListener('DOMContentLoaded', () => {
             renderTopics();
             renderRepositories();
             setupEventListeners();
             setupThemeToggle();
+            setupProductPanels();
+            updateProductCounts();
         });
 
         function setupThemeToggle() {
@@ -1028,10 +1333,100 @@
 
             clearBtn.addEventListener('click', () => {
                 selectedTopics = [];
+                selectedProduct = null;
                 updateClearButton();
+                updateProductPanelStates();
                 renderSidebar();
                 renderRepositories();
             });
+        }
+
+        // Product panel classification - for the top-level panels
+        function classifyRepoByProduct(repo) {
+            const name = repo.name.toLowerCase();
+            const desc = (repo.description || '').toLowerCase();
+            const topics = (repo.topics || []).map(t => t.toLowerCase());
+            const combined = name + ' ' + desc + ' ' + topics.join(' ');
+
+            // Skip .github
+            if (name === '.github') return null;
+
+            // LangSmith - tracing, evals, observability, debugging, deployment
+            const langsmithKeywords = ['langsmith', 'tracing', 'trace', 'eval', 'debug', 'observability', 'otel', 'cicd', 'deployment', 'ls-deployment'];
+            if (langsmithKeywords.some(kw => combined.includes(kw))) {
+                return 'langsmith';
+            }
+
+            // LangGraph - agents, graphs, workflows
+            const langgraphKeywords = ['langgraph', 'graph', 'agent-builder', 'agent2agent', 'agent-oauth', 'azure-langgraph', 'remote-graph'];
+            if (langgraphKeywords.some(kw => combined.includes(kw))) {
+                return 'langgraph';
+            }
+
+            // LangChain - framework, guardrails, prompts, middleware
+            const langchainKeywords = ['langchain', 'guardrail', 'middleware', 'framework', 'prompt'];
+            if (langchainKeywords.some(kw => combined.includes(kw))) {
+                return 'langchain';
+            }
+
+            return null; // Uncategorized
+        }
+
+        function setupProductPanels() {
+            const panels = document.querySelectorAll('.product-panel');
+
+            panels.forEach(panel => {
+                panel.addEventListener('click', () => {
+                    const product = panel.dataset.product;
+
+                    if (selectedProduct === product) {
+                        // Deselect if clicking the same panel
+                        selectedProduct = null;
+                    } else {
+                        selectedProduct = product;
+                    }
+
+                    // Clear other filters when using product panels
+                    selectedTopics = [];
+                    updateClearButton();
+                    updateProductPanelStates();
+                    renderSidebar();
+                    renderRepositories();
+                });
+            });
+        }
+
+        function updateProductPanelStates() {
+            const panels = document.querySelectorAll('.product-panel');
+            panels.forEach(panel => {
+                const product = panel.dataset.product;
+                if (selectedProduct === product) {
+                    panel.classList.add('active');
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
+        }
+
+        function updateProductCounts() {
+            const repos = hierarchyData.all_repositories || [];
+
+            const counts = {
+                langchain: 0,
+                langgraph: 0,
+                langsmith: 0
+            };
+
+            repos.forEach(repo => {
+                const product = classifyRepoByProduct(repo);
+                if (product && counts[product] !== undefined) {
+                    counts[product]++;
+                }
+            });
+
+            document.getElementById('langchain-count').textContent = `${counts.langchain} repos`;
+            document.getElementById('langgraph-count').textContent = `${counts.langgraph} repos`;
+            document.getElementById('langsmith-count').textContent = `${counts.langsmith} repos`;
         }
 
         function toggleTopic(topic) {
@@ -1041,15 +1436,22 @@
             } else {
                 selectedTopics.splice(index, 1);
             }
+            // Clear product selection when using sidebar filters
+            selectedProduct = null;
+            updateProductPanelStates();
             updateClearButton();
             renderSidebar();
             renderRepositories();
         }
 
         function updateClearButton() {
-            if (selectedTopics.length > 0) {
+            if (selectedTopics.length > 0 || selectedProduct) {
                 clearBtn.classList.remove('hidden');
-                clearBtn.textContent = `Clear Filter (${selectedTopics.length})`;
+                if (selectedProduct) {
+                    clearBtn.textContent = 'Clear Filter';
+                } else {
+                    clearBtn.textContent = `Clear Filter (${selectedTopics.length})`;
+                }
             } else {
                 clearBtn.classList.add('hidden');
             }
@@ -1164,80 +1566,153 @@
             }).join('');
         }
 
-        // Topic groupings for hierarchical display
-        const topicGroups = {
-            'Agents & Graphs': ['langgraph', 'agent', 'agents', 'deepagent', 'deep-agent', 'tool', 'tools'],
-            'Observability & Evals': ['langsmith', 'eval', 'evals', 'evaluation', 'tracing', 'observability'],
-            'Testing & CI/CD': ['testing', 'test', 'cicd', 'ci-cd', 'pipeline', 'offline-eval'],
-            'Security & Auth': ['guardrails', 'guardrail', 'security', 'auth', 'mcp'],
-            'RAG & Retrieval': ['rag', 'retrieval', 'search', 'vector', 'embedding'],
-            'Chat & UI': ['chat', 'ui', 'frontend', 'gen-ui', 'custom-output', 'slide', 'annotation'],
-            'Infrastructure': ['deployment', 'production', 'distributed', 'remote', 'azure']
-        };
-
-        function getTopicGroup(topicName) {
-            for (const [group, keywords] of Object.entries(topicGroups)) {
-                if (keywords.some(kw => topicName.toLowerCase().includes(kw))) {
-                    return group;
+        // LangChain Product Categories - matches langchain.com structure
+        const productCategories = {
+            'LangSmith': {
+                icon: `<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 1-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" /></svg>`,
+                subcategories: {
+                    'Observability': {
+                        desc: 'Tracing & debugging',
+                        keywords: ['tracing', 'debug', 'trace', 'otel', 'observability', 'langsmith-debug', 'langsmith-in-code', 'distributed-tracing']
+                    },
+                    'Evaluation': {
+                        desc: 'Evals & testing',
+                        keywords: ['eval', 'evals', 'evaluation', 'evaluations', 'playwright', 'ml-model-evals', 'context-failure']
+                    },
+                    'Deployment': {
+                        desc: 'CI/CD & production',
+                        keywords: ['deployment', 'deploy', 'cicd', 'ci-cd', 'pipeline', 'openai-compatible', 'ls-deployments']
+                    },
+                    'Agent Builder': {
+                        desc: 'Build & customize agents',
+                        keywords: ['agent-builder', 'agent-building', 'custom-output', 'custom-slide', 'output-render', 'langsmithapi']
+                    }
+                }
+            },
+            'Open Source': {
+                icon: `<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" /></svg>`,
+                subcategories: {
+                    'LangGraph': {
+                        desc: 'Agent workflows & state',
+                        keywords: ['langgraph', 'graph', 'agent-builder-mcp', 'azure-langgraph', 'agent-oauth', 'agent2agent', 'remote-graph']
+                    },
+                    'Deep Agents': {
+                        desc: 'Long-running & complex tasks',
+                        keywords: ['deepagent', 'deep-agent', 'deepagent-gen-ui', 'deepagent-coder']
+                    },
+                    'LangChain': {
+                        desc: 'Framework & utilities',
+                        keywords: ['langchain', 'framework', 'guardrails', 'middleware', 'prompt']
+                    }
+                }
+            },
+            'Integrations': {
+                icon: `<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>`,
+                subcategories: {
+                    'MCP': {
+                        desc: 'Model Context Protocol',
+                        keywords: ['mcp', 'mcp-auth']
+                    },
+                    'Cloud Providers': {
+                        desc: 'AWS, Azure & more',
+                        keywords: ['azure', 'aws', 'bedrock', 'strands']
+                    },
+                    'Assistants': {
+                        desc: 'Assistant integrations',
+                        keywords: ['assistant', 'assistants', 'inbox']
+                    }
                 }
             }
-            return 'Other';
+        };
+
+        // Classify a repo into a product category
+        function classifyRepo(repo) {
+            const name = repo.name.toLowerCase();
+            const desc = (repo.description || '').toLowerCase();
+            const topics = (repo.topics || []).map(t => t.toLowerCase());
+            const combined = name + ' ' + desc + ' ' + topics.join(' ');
+
+            // Skip .github repo
+            if (name === '.github') return null;
+
+            for (const [category, catData] of Object.entries(productCategories)) {
+                for (const [subcat, subcatData] of Object.entries(catData.subcategories)) {
+                    if (subcatData.keywords.some(kw => combined.includes(kw))) {
+                        return { category, subcategory: subcat };
+                    }
+                }
+            }
+
+            return { category: 'Uncategorized', subcategory: 'Other' };
         }
 
         function renderTopics() {
-            const topics = hierarchyData.topics || {};
+            const repos = hierarchyData.all_repositories || [];
             const filteredRepos = getFilteredRepos();
 
-            // Calculate counts based on filtered repos
-            const topicCounts = {};
-            Object.keys(topics).forEach(topicName => {
-                if (topicName === 'uncategorized') {
-                    topicCounts[topicName] = filteredRepos.filter(r => (r.topics || []).length === 0).length;
-                } else {
-                    topicCounts[topicName] = filteredRepos.filter(r => (r.topics || []).includes(topicName)).length;
-                }
+            // Classify all repos
+            const categorized = {};
+            repos.forEach(repo => {
+                const classification = classifyRepo(repo);
+                if (!classification) return;
+
+                const { category, subcategory } = classification;
+                if (!categorized[category]) categorized[category] = {};
+                if (!categorized[category][subcategory]) categorized[category][subcategory] = [];
+                categorized[category][subcategory].push(repo);
             });
 
-            // Group topics
-            const grouped = {};
-            Object.entries(topics).forEach(([name, data]) => {
-                const group = getTopicGroup(name);
-                if (!grouped[group]) grouped[group] = [];
-                grouped[group].push({ name, data, count: topicCounts[name] || 0 });
-            });
+            // Calculate filtered counts
+            const filteredCounts = {};
+            filteredRepos.forEach(repo => {
+                const classification = classifyRepo(repo);
+                if (!classification) return;
 
-            // Sort topics within each group by count
-            Object.keys(grouped).forEach(group => {
-                grouped[group].sort((a, b) => b.data.count - a.data.count);
+                const { category, subcategory } = classification;
+                const key = `${category}:${subcategory}`;
+                filteredCounts[key] = (filteredCounts[key] || 0) + 1;
             });
-
-            // Define group order
-            const groupOrder = ['Agents & Graphs', 'Observability & Evals', 'Testing & CI/CD', 'Security & Auth', 'RAG & Retrieval', 'Chat & UI', 'Infrastructure', 'Other'];
 
             let html = '';
 
-            groupOrder.forEach(groupName => {
-                const groupTopics = grouped[groupName];
-                if (!groupTopics || groupTopics.length === 0) return;
+            // Render each product category
+            Object.entries(productCategories).forEach(([categoryName, categoryData]) => {
+                const subcats = categorized[categoryName] || {};
+                const categoryTotal = Object.values(subcats).reduce((sum, arr) => sum + arr.length, 0);
 
-                const groupCount = groupTopics.reduce((sum, t) => sum + t.count, 0);
+                if (categoryTotal === 0) return;
+
+                const categoryFilteredTotal = Object.keys(subcats).reduce((sum, subcat) => {
+                    return sum + (filteredCounts[`${categoryName}:${subcat}`] || 0);
+                }, 0);
 
                 html += `
-                    <div class="topic-group" data-group="${groupName}">
+                    <div class="topic-group product-category" data-group="${categoryName}">
                         <div class="topic-group-header" onclick="this.parentElement.classList.toggle('collapsed')">
                             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
-                            ${groupName}
-                            <span class="topic-count" style="margin-left: auto;">${groupCount}</span>
+                            <span class="category-icon">${categoryData.icon}</span>
+                            ${categoryName}
+                            <span class="topic-count" style="margin-left: auto;">${categoryFilteredTotal}</span>
                         </div>
                         <div class="topic-group-items">
-                            ${groupTopics.map(t => {
-                                const isDisabled = t.count === 0 && !selectedTopics.includes(t.name);
+                            ${Object.entries(categoryData.subcategories).map(([subcatName, subcatData]) => {
+                                const count = filteredCounts[`${categoryName}:${subcatName}`] || 0;
+                                const totalCount = (subcats[subcatName] || []).length;
+                                const filterKey = `${categoryName}:${subcatName}`;
+                                const isDisabled = count === 0 && !selectedTopics.includes(filterKey);
+                                const isActive = selectedTopics.includes(filterKey);
+
+                                if (totalCount === 0) return '';
+
                                 return `
-                                    <div class="topic-item ${selectedTopics.includes(t.name) ? 'active' : ''} ${isDisabled ? 'disabled' : ''}" data-topic="${t.name}">
-                                        <span class="topic-name">${t.name}</span>
-                                        <span class="topic-count">${t.count}</span>
+                                    <div class="topic-item subcategory-item ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''}" data-topic="${filterKey}">
+                                        <div class="subcategory-info">
+                                            <span class="topic-name">${subcatName}</span>
+                                            <span class="subcategory-desc">${subcatData.desc}</span>
+                                        </div>
+                                        <span class="topic-count">${count}</span>
                                     </div>
                                 `;
                             }).join('')}
@@ -1245,6 +1720,41 @@
                     </div>
                 `;
             });
+
+            // Add Uncategorized section if there are any
+            const uncategorizedRepos = repos.filter(r => {
+                const c = classifyRepo(r);
+                return c && c.category === 'Uncategorized';
+            });
+
+            if (uncategorizedRepos.length > 0) {
+                const uncatFilteredCount = filteredRepos.filter(r => {
+                    const c = classifyRepo(r);
+                    return c && c.category === 'Uncategorized';
+                }).length;
+
+                const filterKey = 'Uncategorized:Other';
+                const isActive = selectedTopics.includes(filterKey);
+                const isDisabled = uncatFilteredCount === 0 && !isActive;
+
+                html += `
+                    <div class="topic-group" data-group="Uncategorized">
+                        <div class="topic-group-header" onclick="this.parentElement.classList.toggle('collapsed')">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                            Uncategorized
+                            <span class="topic-count" style="margin-left: auto;">${uncatFilteredCount}</span>
+                        </div>
+                        <div class="topic-group-items">
+                            <div class="topic-item ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''}" data-topic="${filterKey}">
+                                <span class="topic-name">Needs Labels</span>
+                                <span class="topic-count">${uncatFilteredCount}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
 
             topicList.innerHTML = html;
         }
@@ -1281,29 +1791,34 @@
         function getFilteredRepos() {
             let repos = hierarchyData.all_repositories || [];
 
+            // Filter out .github repo
+            repos = repos.filter(r => r.name !== '.github');
+
+            // Filter by selected product panel
+            if (selectedProduct) {
+                repos = repos.filter(repo => classifyRepoByProduct(repo) === selectedProduct);
+            }
+
             if (selectedTopics.length > 0) {
                 if (currentView === 'language') {
-                    // Filter repos that match ALL selected languages
+                    // Filter repos that match ANY selected language
                     repos = repos.filter(repo => {
                         const repoLang = repo.language || 'Unknown';
-                        return selectedTopics.every(lang => repoLang === lang);
+                        return selectedTopics.includes(repoLang);
                     });
                 } else if (currentView === 'difficulty') {
-                    // Filter repos that match ALL selected difficulty levels
+                    // Filter repos that match ANY selected difficulty level
                     repos = repos.filter(repo => {
                         const repoLevel = classifyDifficulty(repo);
-                        return selectedTopics.every(level => repoLevel === level);
+                        return selectedTopics.includes(repoLevel);
                     });
                 } else {
-                    // Filter repos that have ALL selected topics (intersection)
+                    // Filter repos that match ANY selected category:subcategory
                     repos = repos.filter(repo => {
-                        const repoTopics = repo.topics || [];
-                        return selectedTopics.every(selectedTopic => {
-                            if (selectedTopic === 'uncategorized') {
-                                return repoTopics.length === 0;
-                            }
-                            return repoTopics.includes(selectedTopic);
-                        });
+                        const classification = classifyRepo(repo);
+                        if (!classification) return false;
+                        const repoKey = `${classification.category}:${classification.subcategory}`;
+                        return selectedTopics.includes(repoKey);
                     });
                 }
             }
@@ -1322,13 +1837,30 @@
         function renderRepositories() {
             const repos = getFilteredRepos();
 
-            if (selectedTopics.length > 0) {
+            // Set the title based on selection
+            if (selectedProduct) {
+                const productNames = {
+                    langchain: 'LangChain',
+                    langgraph: 'LangGraph',
+                    langsmith: 'LangSmith'
+                };
+                reposTitle.textContent = productNames[selectedProduct] + ' Repositories';
+            } else if (selectedTopics.length > 0) {
+                // Format the title nicely for category:subcategory format
+                const formatTopic = (t) => {
+                    if (t.includes(':')) {
+                        const [cat, subcat] = t.split(':');
+                        return `${cat} → ${subcat}`;
+                    }
+                    return t;
+                };
+
                 if (selectedTopics.length === 1) {
-                    reposTitle.textContent = selectedTopics[0];
-                } else if (selectedTopics.length <= 3) {
-                    reposTitle.textContent = selectedTopics.join(', ');
+                    reposTitle.textContent = formatTopic(selectedTopics[0]);
+                } else if (selectedTopics.length <= 2) {
+                    reposTitle.textContent = selectedTopics.map(formatTopic).join(', ');
                 } else {
-                    reposTitle.textContent = `${selectedTopics.slice(0, 2).join(', ')} +${selectedTopics.length - 2} more`;
+                    reposTitle.textContent = `${formatTopic(selectedTopics[0])} +${selectedTopics.length - 1} more`;
                 }
             } else {
                 reposTitle.textContent = 'All Repositories';
@@ -1348,13 +1880,22 @@
                 return;
             }
 
-            reposGrid.innerHTML = repos.map(repo => `
+            reposGrid.innerHTML = repos.map(repo => {
+                const classification = classifyRepo(repo);
+                const categoryBadge = classification && classification.category !== 'Uncategorized'
+                    ? `<span class="repo-category-badge">${classification.subcategory}</span>`
+                    : '';
+
+                return `
                 <a href="${repo.url}" target="_blank" rel="noopener" class="repo-card">
-                    <div class="repo-name">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                        </svg>
-                        ${repo.name}
+                    <div class="repo-header">
+                        <div class="repo-name">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                            </svg>
+                            ${repo.name}
+                        </div>
+                        ${categoryBadge}
                     </div>
                     <div class="repo-description">${repo.description || 'No description available'}</div>
                     <div class="repo-meta">
@@ -1388,7 +1929,7 @@
                         </div>
                     ` : ''}
                 </a>
-            `).join('');
+            `}).join('');
         }
     </script>
 </body>
