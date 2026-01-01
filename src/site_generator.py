@@ -44,7 +44,7 @@ class SiteGenerator:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{self.org_name} - Repository Explorer</title>
-    <link rel="icon" type="image/png" href="https://registry.npmmirror.com/@lobehub/icons-static-png/1.75.0/files/dark/langchain-color.png">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -277,79 +277,275 @@ class SiteGenerator:
             margin: 0 auto;
         }}
 
-        /* Stats Grid - LangChain style cards */
-        .stats-grid {{
+        /* Product Panels - Main navigation cards */
+        .product-panels {{
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.25rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
         }}
 
         @media (max-width: 900px) {{
-            .stats-grid {{
-                grid-template-columns: repeat(2, 1fr);
-            }}
-        }}
-
-        @media (max-width: 500px) {{
-            .stats-grid {{
+            .product-panels {{
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }}
         }}
 
-        .stat-card {{
+        .product-panel {{
             background: var(--lc-bg-card);
             border: 1px solid var(--lc-border);
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-            text-align: center;
+            border-radius: var(--radius-xl);
+            padding: 1.75rem;
+            cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
         }}
 
-        .stat-card::before {{
+        .product-panel::before {{
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 2px;
-            background: var(--lc-gradient);
-            opacity: 0;
-            transition: opacity 0.3s;
+            height: 4px;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
         }}
 
-        .stat-card:hover {{
-            border-color: var(--lc-border-hover);
-            transform: translateY(-4px);
+        .product-panel:hover {{
+            transform: translateY(-6px) scale(1.02);
             box-shadow: var(--shadow-lg);
         }}
 
-        .stat-card:hover::before {{
+        .product-panel.active {{
+            transform: scale(1.02);
+        }}
+
+        /* LangChain Panel - Green flowing gradient */
+        .product-panel.langchain {{
+            background:
+                linear-gradient(135deg, rgba(34, 197, 94, 0.9) 0%, rgba(16, 185, 129, 0.85) 50%, rgba(5, 150, 105, 0.9) 100%),
+                radial-gradient(ellipse at 20% 80%, rgba(52, 211, 153, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(34, 197, 94, 0.3) 0%, transparent 40%),
+                radial-gradient(ellipse at 40% 40%, rgba(16, 185, 129, 0.5) 0%, transparent 60%);
+            background-color: #059669;
+            border-color: rgba(34, 197, 94, 0.3);
+        }}
+        .product-panel.langchain::before {{
+            background: linear-gradient(90deg, #22C55E 0%, #10B981 50%, #059669 100%);
             opacity: 1;
         }}
+        .product-panel.langchain::after {{
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 30% 70%, rgba(255,255,255,0.1) 0%, transparent 40%),
+                radial-gradient(circle at 70% 30%, rgba(255,255,255,0.08) 0%, transparent 30%);
+            pointer-events: none;
+            border-radius: inherit;
+        }}
+        .product-panel.langchain.active {{
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+        }}
+        .product-panel.langchain .product-icon {{
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            backdrop-filter: blur(10px);
+        }}
+        .product-panel.langchain .product-count {{
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            backdrop-filter: blur(10px);
+        }}
+        .product-panel.langchain .product-title,
+        .product-panel.langchain .product-description {{
+            color: #fff;
+        }}
+        .product-panel.langchain .product-description {{
+            color: rgba(255, 255, 255, 0.85);
+        }}
+        .product-panel.langchain .product-arrow {{
+            color: rgba(255, 255, 255, 0.7);
+        }}
+        .product-panel.langchain:hover .product-arrow {{
+            color: #fff;
+        }}
 
-        .stat-value {{
+        /* LangGraph Panel - Blue/Purple flowing gradient */
+        .product-panel.langgraph {{
+            background:
+                linear-gradient(135deg, rgba(99, 102, 241, 0.9) 0%, rgba(79, 70, 229, 0.85) 40%, rgba(139, 92, 246, 0.9) 100%),
+                radial-gradient(ellipse at 80% 80%, rgba(167, 139, 250, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.3) 0%, transparent 40%),
+                radial-gradient(ellipse at 60% 50%, rgba(139, 92, 246, 0.5) 0%, transparent 60%);
+            background-color: #4F46E5;
+            border-color: rgba(99, 102, 241, 0.3);
+        }}
+        .product-panel.langgraph::before {{
+            background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 50%, #A78BFA 100%);
+            opacity: 1;
+        }}
+        .product-panel.langgraph::after {{
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 70% 80%, rgba(255,255,255,0.1) 0%, transparent 40%),
+                radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08) 0%, transparent 30%);
+            pointer-events: none;
+            border-radius: inherit;
+        }}
+        .product-panel.langgraph.active {{
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+        }}
+        .product-panel.langgraph .product-icon {{
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            backdrop-filter: blur(10px);
+        }}
+        .product-panel.langgraph .product-count {{
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            backdrop-filter: blur(10px);
+        }}
+        .product-panel.langgraph .product-title,
+        .product-panel.langgraph .product-description {{
+            color: #fff;
+        }}
+        .product-panel.langgraph .product-description {{
+            color: rgba(255, 255, 255, 0.85);
+        }}
+        .product-panel.langgraph .product-arrow {{
+            color: rgba(255, 255, 255, 0.7);
+        }}
+        .product-panel.langgraph:hover .product-arrow {{
+            color: #fff;
+        }}
+
+        /* LangSmith Panel - Orange/Amber flowing gradient */
+        .product-panel.langsmith {{
+            background:
+                linear-gradient(135deg, rgba(251, 146, 60, 0.9) 0%, rgba(245, 158, 11, 0.85) 40%, rgba(234, 88, 12, 0.9) 100%),
+                radial-gradient(ellipse at 20% 80%, rgba(253, 186, 116, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(251, 146, 60, 0.3) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 60%, rgba(245, 158, 11, 0.5) 0%, transparent 60%);
+            background-color: #F59E0B;
+            border-color: rgba(245, 158, 11, 0.3);
+        }}
+        .product-panel.langsmith::before {{
+            background: linear-gradient(90deg, #FB923C 0%, #F59E0B 50%, #EA580C 100%);
+            opacity: 1;
+        }}
+        .product-panel.langsmith::after {{
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.08) 0%, transparent 30%);
+            pointer-events: none;
+            border-radius: inherit;
+        }}
+        .product-panel.langsmith.active {{
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+        }}
+        .product-panel.langsmith .product-icon {{
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            backdrop-filter: blur(10px);
+        }}
+        .product-panel.langsmith .product-count {{
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            backdrop-filter: blur(10px);
+        }}
+        .product-panel.langsmith .product-title,
+        .product-panel.langsmith .product-description {{
+            color: #fff;
+        }}
+        .product-panel.langsmith .product-description {{
+            color: rgba(255, 255, 255, 0.85);
+        }}
+        .product-panel.langsmith .product-arrow {{
+            color: rgba(255, 255, 255, 0.7);
+        }}
+        .product-panel.langsmith:hover .product-arrow {{
+            color: #fff;
+        }}
+
+        .product-panel-header {{
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }}
+
+        .product-icon {{
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }}
+
+        .product-icon svg {{
+            width: 26px;
+            height: 26px;
+        }}
+
+        .product-title {{
             font-family: 'Manrope', sans-serif;
-            font-size: 2.75rem;
-            font-weight: 800;
-            background: var(--lc-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--lc-text-primary);
         }}
 
-        .stat-label {{
-            font-size: 0.875rem;
+        .product-description {{
+            font-size: 0.9rem;
             color: var(--lc-text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 0.5rem;
-            font-weight: 500;
+            line-height: 1.5;
+            margin-bottom: 1rem;
         }}
+
+        .product-footer {{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }}
+
+        .product-count {{
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+        }}
+
+        .product-arrow {{
+            width: 20px;
+            height: 20px;
+            color: var(--lc-text-muted);
+            transition: transform 0.2s, color 0.2s;
+        }}
+
+        .product-panel:hover .product-arrow {{
+            transform: translateX(4px);
+            color: var(--lc-text-primary);
+        }}
+
+        /* Product panel animations */
+        .product-panel {{
+            animation: fadeInUp 0.5s ease-out;
+            animation-fill-mode: backwards;
+        }}
+
+        .product-panel:nth-child(1) {{ animation-delay: 0.1s; }}
+        .product-panel:nth-child(2) {{ animation-delay: 0.2s; }}
+        .product-panel:nth-child(3) {{ animation-delay: 0.3s; }}
 
         /* Controls */
         .controls {{
@@ -498,16 +694,6 @@ class SiteGenerator:
             display: none;
         }}
 
-        .selected-count {{
-            font-size: 0.65rem;
-            background: var(--lc-teal);
-            color: var(--lc-bg-primary);
-            padding: 0.125rem 0.375rem;
-            border-radius: 50px;
-            margin-left: 0.5rem;
-            font-weight: 700;
-        }}
-
         .topic-list {{
             display: flex;
             flex-direction: column;
@@ -621,6 +807,52 @@ class SiteGenerator:
 
         .topic-group.collapsed .topic-group-items {{
             display: none;
+        }}
+
+        /* Product Category Styles */
+        .product-category .topic-group-header {{
+            gap: 0.5rem;
+        }}
+
+        .category-icon {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }}
+
+        .category-icon svg {{
+            width: 16px;
+            height: 16px;
+            color: var(--lc-teal);
+        }}
+
+        .subcategory-item {{
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 0.25rem;
+        }}
+
+        .subcategory-item .subcategory-info {{
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }}
+
+        .subcategory-item .subcategory-desc {{
+            font-size: 0.7rem;
+            color: var(--lc-text-muted);
+            font-weight: 400;
+        }}
+
+        .subcategory-item .topic-count {{
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }}
+
+        .subcategory-item {{
+            position: relative;
         }}
 
         /* Difficulty Levels */
@@ -782,12 +1014,19 @@ class SiteGenerator:
             opacity: 1;
         }}
 
+        .repo-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }}
+
         .repo-name {{
             font-family: 'Manrope', sans-serif;
             font-size: 1.05rem;
             font-weight: 700;
             color: var(--lc-teal);
-            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -797,6 +1036,20 @@ class SiteGenerator:
             width: 18px;
             height: 18px;
             opacity: 0.7;
+            flex-shrink: 0;
+        }}
+
+        .repo-category-badge {{
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            background: var(--lc-purple-muted);
+            color: var(--lc-purple);
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            flex-shrink: 0;
         }}
 
         .repo-description {{
@@ -948,6 +1201,63 @@ class SiteGenerator:
             <p class="subtitle">Discover code examples, cookbooks, reference implementations, and workshop materials from the LangChain team.</p>
         </header>
 
+        <!-- Product Panels -->
+        <div class="product-panels" id="product-panels">
+            <div class="product-panel langchain" data-product="langchain">
+                <div class="product-panel-header">
+                    <div class="product-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                        </svg>
+                    </div>
+                    <div class="product-title">LangChain</div>
+                </div>
+                <div class="product-description">Framework integrations, utilities, guardrails, and middleware patterns.</div>
+                <div class="product-footer">
+                    <span class="product-count" id="langchain-count">0 repos</span>
+                    <svg class="product-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="product-panel langgraph" data-product="langgraph">
+                <div class="product-panel-header">
+                    <div class="product-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                        </svg>
+                    </div>
+                    <div class="product-title">LangGraph</div>
+                </div>
+                <div class="product-description">Agent workflows, state machines, multi-agent systems, and complex orchestration.</div>
+                <div class="product-footer">
+                    <span class="product-count" id="langgraph-count">0 repos</span>
+                    <svg class="product-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="product-panel langsmith" data-product="langsmith">
+                <div class="product-panel-header">
+                    <div class="product-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 1-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+                        </svg>
+                    </div>
+                    <div class="product-title">LangSmith</div>
+                </div>
+                <div class="product-description">Observability, tracing, evaluation, debugging, and deployment pipelines.</div>
+                <div class="product-footer">
+                    <span class="product-count" id="langsmith-count">0 repos</span>
+                    <svg class="product-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
         <div class="controls">
             <div class="search-box">
                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -1006,6 +1316,7 @@ class SiteGenerator:
 
         let currentView = 'topics';
         let selectedTopics = [];
+        let selectedProduct = null;
         let searchQuery = '';
 
         const topicList = document.getElementById('topic-list');
@@ -1023,6 +1334,8 @@ class SiteGenerator:
             renderRepositories();
             setupEventListeners();
             setupThemeToggle();
+            setupProductPanels();
+            updateProductCounts();
         }});
 
         function setupThemeToggle() {{
@@ -1040,6 +1353,73 @@ class SiteGenerator:
             }});
         }}
 
+        // Product panel classification
+        function classifyRepoByProduct(repo) {{
+            const name = repo.name.toLowerCase();
+            const desc = (repo.description || '').toLowerCase();
+            const topics = (repo.topics || []).map(t => t.toLowerCase());
+            const combined = name + ' ' + desc + ' ' + topics.join(' ');
+
+            if (name === '.github') return null;
+
+            // LangSmith
+            const langsmithKeywords = ['langsmith', 'tracing', 'trace', 'eval', 'debug', 'observability', 'otel', 'cicd', 'deployment', 'ls-deployment'];
+            if (langsmithKeywords.some(kw => combined.includes(kw))) return 'langsmith';
+
+            // LangGraph
+            const langgraphKeywords = ['langgraph', 'graph', 'agent-builder', 'agent2agent', 'agent-oauth', 'azure-langgraph', 'remote-graph'];
+            if (langgraphKeywords.some(kw => combined.includes(kw))) return 'langgraph';
+
+            // LangChain
+            const langchainKeywords = ['langchain', 'guardrail', 'middleware', 'framework', 'prompt'];
+            if (langchainKeywords.some(kw => combined.includes(kw))) return 'langchain';
+
+            return null;
+        }}
+
+        function setupProductPanels() {{
+            const panels = document.querySelectorAll('.product-panel');
+            panels.forEach(panel => {{
+                panel.addEventListener('click', () => {{
+                    const product = panel.dataset.product;
+                    if (selectedProduct === product) {{
+                        selectedProduct = null;
+                    }} else {{
+                        selectedProduct = product;
+                    }}
+                    selectedTopics = [];
+                    updateClearButton();
+                    updateProductPanelStates();
+                    renderSidebar();
+                    renderRepositories();
+                }});
+            }});
+        }}
+
+        function updateProductPanelStates() {{
+            const panels = document.querySelectorAll('.product-panel');
+            panels.forEach(panel => {{
+                const product = panel.dataset.product;
+                if (selectedProduct === product) {{
+                    panel.classList.add('active');
+                }} else {{
+                    panel.classList.remove('active');
+                }}
+            }});
+        }}
+
+        function updateProductCounts() {{
+            const repos = hierarchyData.all_repositories || [];
+            const counts = {{ langchain: 0, langgraph: 0, langsmith: 0 }};
+            repos.forEach(repo => {{
+                const product = classifyRepoByProduct(repo);
+                if (product && counts[product] !== undefined) counts[product]++;
+            }});
+            document.getElementById('langchain-count').textContent = `${{counts.langchain}} repos`;
+            document.getElementById('langgraph-count').textContent = `${{counts.langgraph}} repos`;
+            document.getElementById('langsmith-count').textContent = `${{counts.langsmith}} repos`;
+        }}
+
         function setupEventListeners() {{
             searchInput.addEventListener('input', (e) => {{
                 searchQuery = e.target.value.toLowerCase();
@@ -1052,6 +1432,8 @@ class SiteGenerator:
                     btn.classList.add('active');
                     currentView = btn.dataset.view;
                     selectedTopics = [];
+                    selectedProduct = null;
+                    updateProductPanelStates();
                     updateClearButton();
                     renderSidebar();
                     renderRepositories();
@@ -1068,7 +1450,9 @@ class SiteGenerator:
 
             clearBtn.addEventListener('click', () => {{
                 selectedTopics = [];
+                selectedProduct = null;
                 updateClearButton();
+                updateProductPanelStates();
                 renderSidebar();
                 renderRepositories();
             }});
@@ -1081,15 +1465,21 @@ class SiteGenerator:
             }} else {{
                 selectedTopics.splice(index, 1);
             }}
+            selectedProduct = null;
+            updateProductPanelStates();
             updateClearButton();
             renderSidebar();
             renderRepositories();
         }}
 
         function updateClearButton() {{
-            if (selectedTopics.length > 0) {{
+            if (selectedTopics.length > 0 || selectedProduct) {{
                 clearBtn.classList.remove('hidden');
-                clearBtn.textContent = `Clear Filter (${{selectedTopics.length}})`;
+                if (selectedProduct) {{
+                    clearBtn.textContent = 'Clear Filter';
+                }} else {{
+                    clearBtn.textContent = `Clear Filter (${{selectedTopics.length}})`;
+                }}
             }} else {{
                 clearBtn.classList.add('hidden');
             }}
@@ -1108,32 +1498,12 @@ class SiteGenerator:
             }}
         }}
 
-        // Difficulty classification based on repo characteristics
+        // Difficulty classification
         const difficultyLevels = {{
-            beginner: {{
-                name: 'Beginner',
-                desc: 'Getting started & basics',
-                keywords: ['intro', 'getting-started', 'basics', 'tutorial', 'quickstart', 'hello', 'simple', 'starter', 'demo', 'example'],
-                icon: '1'
-            }},
-            intermediate: {{
-                name: 'Intermediate',
-                desc: 'Integrations & patterns',
-                keywords: ['integration', 'cookbook', 'workshop', 'custom', 'chat', 'rag', 'retrieval'],
-                icon: '2'
-            }},
-            advanced: {{
-                name: 'Advanced',
-                desc: 'Production & complex flows',
-                keywords: ['production', 'deployment', 'cicd', 'pipeline', 'agent', 'langgraph', 'distributed', 'remote'],
-                icon: '3'
-            }},
-            expert: {{
-                name: 'Expert',
-                desc: 'Deep customization & evals',
-                keywords: ['eval', 'guardrail', 'security', 'optimization', 'framework', 'context-failure', 'mcp', 'auth'],
-                icon: '4'
-            }}
+            beginner: {{ name: 'Beginner', desc: 'Getting started & basics', keywords: ['intro', 'getting-started', 'basics', 'tutorial', 'quickstart', 'hello', 'simple', 'starter', 'demo', 'example'] }},
+            intermediate: {{ name: 'Intermediate', desc: 'Integrations & patterns', keywords: ['integration', 'cookbook', 'workshop', 'custom', 'chat', 'rag', 'retrieval'] }},
+            advanced: {{ name: 'Advanced', desc: 'Production & complex flows', keywords: ['production', 'deployment', 'cicd', 'pipeline', 'agent', 'langgraph', 'distributed', 'remote'] }},
+            expert: {{ name: 'Expert', desc: 'Deep customization & evals', keywords: ['eval', 'guardrail', 'security', 'optimization', 'framework', 'context-failure', 'mcp', 'auth'] }}
         }};
 
         function classifyDifficulty(repo) {{
@@ -1141,41 +1511,15 @@ class SiteGenerator:
             const desc = (repo.description || '').toLowerCase();
             const topics = (repo.topics || []).map(t => t.toLowerCase());
             const combined = name + ' ' + desc + ' ' + topics.join(' ');
-
-            // Check each difficulty level
             for (const [level, config] of Object.entries(difficultyLevels)) {{
-                if (config.keywords.some(kw => combined.includes(kw))) {{
-                    return level;
-                }}
+                if (config.keywords.some(kw => combined.includes(kw))) return level;
             }}
-
-            // Default based on topics count and stars
             if (repo.topics && repo.topics.length > 2) return 'intermediate';
             return 'beginner';
         }}
 
-        function getDifficultyRepos() {{
-            const repos = hierarchyData.all_repositories || [];
-            const classified = {{
-                beginner: [],
-                intermediate: [],
-                advanced: [],
-                expert: []
-            }};
-
-            repos.forEach(repo => {{
-                const level = classifyDifficulty(repo);
-                classified[level].push(repo);
-            }});
-
-            return classified;
-        }}
-
         function renderDifficulty() {{
-            const classified = getDifficultyRepos();
             const filteredRepos = getFilteredRepos();
-
-            // Calculate filtered counts
             const counts = {{}};
             Object.keys(difficultyLevels).forEach(level => {{
                 counts[level] = filteredRepos.filter(r => classifyDifficulty(r) === level).length;
@@ -1204,7 +1548,7 @@ class SiteGenerator:
             }}).join('');
         }}
 
-        // Topic groupings for hierarchical display
+        // Topic groupings
         const topicGroups = {{
             'Agents & Graphs': ['langgraph', 'agent', 'agents', 'deepagent', 'deep-agent', 'tool', 'tools'],
             'Observability & Evals': ['langsmith', 'eval', 'evals', 'evaluation', 'tracing', 'observability'],
@@ -1217,9 +1561,7 @@ class SiteGenerator:
 
         function getTopicGroup(topicName) {{
             for (const [group, keywords] of Object.entries(topicGroups)) {{
-                if (keywords.some(kw => topicName.toLowerCase().includes(kw))) {{
-                    return group;
-                }}
+                if (keywords.some(kw => topicName.toLowerCase().includes(kw))) return group;
             }}
             return 'Other';
         }}
@@ -1228,7 +1570,6 @@ class SiteGenerator:
             const topics = hierarchyData.topics || {{}};
             const filteredRepos = getFilteredRepos();
 
-            // Calculate counts based on filtered repos
             const topicCounts = {{}};
             Object.keys(topics).forEach(topicName => {{
                 if (topicName === 'uncategorized') {{
@@ -1238,7 +1579,6 @@ class SiteGenerator:
                 }}
             }});
 
-            // Group topics
             const grouped = {{}};
             Object.entries(topics).forEach(([name, data]) => {{
                 const group = getTopicGroup(name);
@@ -1246,20 +1586,16 @@ class SiteGenerator:
                 grouped[group].push({{ name, data, count: topicCounts[name] || 0 }});
             }});
 
-            // Sort topics within each group by count
             Object.keys(grouped).forEach(group => {{
                 grouped[group].sort((a, b) => b.data.count - a.data.count);
             }});
 
-            // Define group order
             const groupOrder = ['Agents & Graphs', 'Observability & Evals', 'Testing & CI/CD', 'Security & Auth', 'RAG & Retrieval', 'Chat & UI', 'Infrastructure', 'Other'];
 
             let html = '';
-
             groupOrder.forEach(groupName => {{
                 const groupTopics = grouped[groupName];
                 if (!groupTopics || groupTopics.length === 0) return;
-
                 const groupCount = groupTopics.reduce((sum, t) => sum + t.count, 0);
 
                 html += `
@@ -1293,7 +1629,6 @@ class SiteGenerator:
             const languages = hierarchyData.languages || {{}};
             const filteredRepos = getFilteredRepos();
 
-            // Calculate counts based on filtered repos
             const langCounts = {{}};
             Object.keys(languages).forEach(lang => {{
                 if (lang === 'Unknown') {{
@@ -1303,8 +1638,7 @@ class SiteGenerator:
                 }}
             }});
 
-            const sortedLanguages = Object.entries(languages)
-                .sort((a, b) => b[1].length - a[1].length);
+            const sortedLanguages = Object.entries(languages).sort((a, b) => b[1].length - a[1].length);
 
             topicList.innerHTML = sortedLanguages.map(([name, repos]) => {{
                 const filteredCount = langCounts[name] || 0;
@@ -1320,28 +1654,28 @@ class SiteGenerator:
 
         function getFilteredRepos() {{
             let repos = hierarchyData.all_repositories || [];
+            repos = repos.filter(r => r.name !== '.github');
+
+            if (selectedProduct) {{
+                repos = repos.filter(repo => classifyRepoByProduct(repo) === selectedProduct);
+            }}
 
             if (selectedTopics.length > 0) {{
                 if (currentView === 'language') {{
-                    // Filter repos that match ALL selected languages
                     repos = repos.filter(repo => {{
                         const repoLang = repo.language || 'Unknown';
-                        return selectedTopics.every(lang => repoLang === lang);
+                        return selectedTopics.includes(repoLang);
                     }});
                 }} else if (currentView === 'difficulty') {{
-                    // Filter repos that match ALL selected difficulty levels
                     repos = repos.filter(repo => {{
                         const repoLevel = classifyDifficulty(repo);
-                        return selectedTopics.every(level => repoLevel === level);
+                        return selectedTopics.includes(repoLevel);
                     }});
                 }} else {{
-                    // Filter repos that have ALL selected topics (intersection)
                     repos = repos.filter(repo => {{
                         const repoTopics = repo.topics || [];
                         return selectedTopics.every(selectedTopic => {{
-                            if (selectedTopic === 'uncategorized') {{
-                                return repoTopics.length === 0;
-                            }}
+                            if (selectedTopic === 'uncategorized') return repoTopics.length === 0;
                             return repoTopics.includes(selectedTopic);
                         }});
                     }});
@@ -1362,7 +1696,10 @@ class SiteGenerator:
         function renderRepositories() {{
             const repos = getFilteredRepos();
 
-            if (selectedTopics.length > 0) {{
+            if (selectedProduct) {{
+                const productNames = {{ langchain: 'LangChain', langgraph: 'LangGraph', langsmith: 'LangSmith' }};
+                reposTitle.textContent = productNames[selectedProduct] + ' Repositories';
+            }} else if (selectedTopics.length > 0) {{
                 if (selectedTopics.length === 1) {{
                     reposTitle.textContent = selectedTopics[0];
                 }} else if (selectedTopics.length <= 3) {{
@@ -1388,13 +1725,20 @@ class SiteGenerator:
                 return;
             }}
 
-            reposGrid.innerHTML = repos.map(repo => `
+            reposGrid.innerHTML = repos.map(repo => {{
+                const product = classifyRepoByProduct(repo);
+                const categoryBadge = product ? `<span class="repo-category-badge">${{product}}</span>` : '';
+
+                return `
                 <a href="${{repo.url}}" target="_blank" rel="noopener" class="repo-card">
-                    <div class="repo-name">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                        </svg>
-                        ${{repo.name}}
+                    <div class="repo-header">
+                        <div class="repo-name">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                            </svg>
+                            ${{repo.name}}
+                        </div>
+                        ${{categoryBadge}}
                     </div>
                     <div class="repo-description">${{repo.description || 'No description available'}}</div>
                     <div class="repo-meta">
@@ -1428,7 +1772,7 @@ class SiteGenerator:
                         </div>
                     ` : ''}}
                 </a>
-            `).join('');
+            `}}).join('');
         }}
     </script>
 </body>
@@ -1452,4 +1796,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
