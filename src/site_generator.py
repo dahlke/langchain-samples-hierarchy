@@ -1039,6 +1039,68 @@ class SiteGenerator:
             flex-shrink: 0;
         }}
 
+        .repo-badges {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.375rem;
+            align-items: center;
+        }}
+
+        .repo-badge {{
+            font-size: 0.6rem;
+            padding: 0.2rem 0.45rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }}
+
+        .repo-badge.langsmith {{
+            background: rgba(245, 158, 11, 0.15);
+            color: #F59E0B;
+        }}
+
+        .repo-badge.langgraph {{
+            background: rgba(99, 102, 241, 0.15);
+            color: #6366F1;
+        }}
+
+        .repo-badge.langchain {{
+            background: rgba(34, 197, 94, 0.15);
+            color: #22C55E;
+        }}
+
+        .repo-difficulty-badge {{
+            font-size: 0.55rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }}
+
+        .repo-difficulty-badge.beginner {{
+            background: rgba(34, 197, 94, 0.12);
+            color: #22C55E;
+        }}
+
+        .repo-difficulty-badge.intermediate {{
+            background: rgba(234, 179, 8, 0.12);
+            color: #EAB308;
+        }}
+
+        .repo-difficulty-badge.advanced {{
+            background: rgba(239, 68, 68, 0.12);
+            color: #EF4444;
+        }}
+
+        .repo-difficulty-badge.expert {{
+            background: rgba(139, 92, 246, 0.12);
+            color: #8B5CF6;
+        }}
+
         .repo-category-badge {{
             font-size: 0.65rem;
             padding: 0.2rem 0.5rem;
@@ -1353,28 +1415,30 @@ class SiteGenerator:
             }});
         }}
 
-        // Product panel classification
+        // Product panel classification - returns array of matching products
         function classifyRepoByProduct(repo) {{
             const name = repo.name.toLowerCase();
             const desc = (repo.description || '').toLowerCase();
             const topics = (repo.topics || []).map(t => t.toLowerCase());
             const combined = name + ' ' + desc + ' ' + topics.join(' ');
 
-            if (name === '.github') return null;
+            if (name === '.github') return [];
+
+            const matches = [];
 
             // LangSmith
             const langsmithKeywords = ['langsmith', 'tracing', 'trace', 'eval', 'debug', 'observability', 'otel', 'cicd', 'deployment', 'ls-deployment'];
-            if (langsmithKeywords.some(kw => combined.includes(kw))) return 'langsmith';
+            if (langsmithKeywords.some(kw => combined.includes(kw))) matches.push('langsmith');
 
             // LangGraph
             const langgraphKeywords = ['langgraph', 'graph', 'agent-builder', 'agent2agent', 'agent-oauth', 'azure-langgraph', 'remote-graph'];
-            if (langgraphKeywords.some(kw => combined.includes(kw))) return 'langgraph';
+            if (langgraphKeywords.some(kw => combined.includes(kw))) matches.push('langgraph');
 
             // LangChain
             const langchainKeywords = ['langchain', 'guardrail', 'middleware', 'framework', 'prompt'];
-            if (langchainKeywords.some(kw => combined.includes(kw))) return 'langchain';
+            if (langchainKeywords.some(kw => combined.includes(kw))) matches.push('langchain');
 
-            return null;
+            return matches;
         }}
 
         function setupProductPanels() {{
@@ -1412,8 +1476,10 @@ class SiteGenerator:
             const repos = hierarchyData.all_repositories || [];
             const counts = {{ langchain: 0, langgraph: 0, langsmith: 0 }};
             repos.forEach(repo => {{
-                const product = classifyRepoByProduct(repo);
-                if (product && counts[product] !== undefined) counts[product]++;
+                const products = classifyRepoByProduct(repo);
+                products.forEach(product => {{
+                    if (counts[product] !== undefined) counts[product]++;
+                }});
             }});
             document.getElementById('langchain-count').textContent = `${{counts.langchain}} repos`;
             document.getElementById('langgraph-count').textContent = `${{counts.langgraph}} repos`;
@@ -1657,7 +1723,7 @@ class SiteGenerator:
             repos = repos.filter(r => r.name !== '.github');
 
             if (selectedProduct) {{
-                repos = repos.filter(repo => classifyRepoByProduct(repo) === selectedProduct);
+                repos = repos.filter(repo => classifyRepoByProduct(repo).includes(selectedProduct));
             }}
 
             if (selectedTopics.length > 0) {{
@@ -1726,8 +1792,13 @@ class SiteGenerator:
             }}
 
             reposGrid.innerHTML = repos.map(repo => {{
-                const product = classifyRepoByProduct(repo);
-                const categoryBadge = product ? `<span class="repo-category-badge">${{product}}</span>` : '';
+                const products = classifyRepoByProduct(repo);
+                const difficulty = classifyDifficulty(repo);
+                const difficultyNames = {{ beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced', expert: 'Expert' }};
+                const productNames = {{ langsmith: 'LangSmith', langgraph: 'LangGraph', langchain: 'LangChain' }};
+
+                const productBadges = products.map(p => `<span class="repo-badge ${{p}}">${{productNames[p]}}</span>`).join('');
+                const difficultyBadge = `<span class="repo-difficulty-badge ${{difficulty}}">${{difficultyNames[difficulty]}}</span>`;
 
                 return `
                 <a href="${{repo.url}}" target="_blank" rel="noopener" class="repo-card">
@@ -1738,7 +1809,10 @@ class SiteGenerator:
                             </svg>
                             ${{repo.name}}
                         </div>
-                        ${{categoryBadge}}
+                        <div class="repo-badges">
+                            ${{productBadges}}
+                            ${{difficultyBadge}}
+                        </div>
                     </div>
                     <div class="repo-description">${{repo.description || 'No description available'}}</div>
                     <div class="repo-meta">
