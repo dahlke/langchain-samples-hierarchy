@@ -288,7 +288,27 @@ class SiteGenerator:
         @media (max-width: 900px) {{
             .product-panels {{
                 grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 0.75rem;
+            }}
+
+            .product-panel {{
+                padding: 1.25rem;
+            }}
+
+            .product-panel:hover {{
+                transform: none;
+            }}
+
+            .container {{
+                padding: 1rem;
+            }}
+
+            header {{
+                margin-bottom: 1.5rem;
+            }}
+
+            header h1 {{
+                font-size: 1.75rem;
             }}
         }}
 
@@ -637,6 +657,22 @@ class SiteGenerator:
             .content-area {{
                 grid-template-columns: 1fr;
             }}
+
+            .topics-sidebar {{
+                position: relative;
+                top: 0;
+                order: 2;
+                max-height: none;
+            }}
+
+            .repos-container {{
+                order: 1;
+            }}
+
+            .product-panels {{
+                position: relative;
+                z-index: 1;
+            }}
         }}
 
         /* Sidebar */
@@ -649,6 +685,7 @@ class SiteGenerator:
             position: sticky;
             top: 1rem;
             box-shadow: var(--shadow-sm);
+            z-index: 10;
         }}
 
         .sidebar-header {{
@@ -975,6 +1012,27 @@ class SiteGenerator:
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1.25rem;
+        }}
+
+        @media (max-width: 600px) {{
+            .repos-grid {{
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }}
+
+            .repo-card {{
+                padding: 1.25rem;
+            }}
+
+            .repo-header {{
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }}
+
+            .repo-badges {{
+                width: 100%;
+            }}
         }}
 
         .repo-card {{
